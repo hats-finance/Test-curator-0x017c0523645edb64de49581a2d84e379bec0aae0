@@ -13,17 +13,12 @@ const airdropJsons = [airdropJson1];
 
 for (const airdropData of airdropJsons) {
     for (const beneficiary in airdropData) {
-        let amounts = airdropData[beneficiary]["token_eligibility"];
         if (!airdropTree[beneficiary]) {
             airdropTree[beneficiary] = "0";
         }
-        airdropTree[beneficiary] = 
-            web3.utils.toBN(airdropTree[beneficiary]).add(
-            web3.utils.toBN(amounts["committee_member"])).add(
-            web3.utils.toBN(amounts["depositor"])).add(
-            web3.utils.toBN(amounts["crow"])).add(
-            web3.utils.toBN(amounts["coder"])).add(
-            web3.utils.toBN(amounts["early_contributor"])).toString();
+        for (const amount of Object.values(airdropData[beneficiary]["token_eligibility"])) {
+            airdropTree[beneficiary] = web3.utils.toBN(airdropTree[beneficiary]).add(web3.utils.toBN(amount)).toString();
+        }
     }
 }
 
