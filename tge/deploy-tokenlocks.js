@@ -23,8 +23,8 @@ async function main() {
         let governance = GOVERNANCE_ADDRESS;
         let beneficiary = timelockData.beneficiary;
         let hatToken = HAT_TOKEN_ADDRESS;
-        timelockData.totalAllocationPercentage = parseFloat(timelockData.totalAllocationPercentage.replace("%", ""))
-        timelockData.unlockAtTGEPercentage = parseFloat(timelockData.unlockAtTGEPercentage.replace("%", ""))
+        timelockData.totalAllocationPercentage = parseFloat(timelockData.totalAllocationPercentage.replace("%", ""));
+        timelockData.unlockAtTGEPercentage = parseFloat(timelockData.unlockAtTGEPercentage.replace("%", ""));
         let totalAmount = TOTAL_HAT_SUPPLY / 100 * timelockData.totalAllocationPercentage;
         let managedAmount = totalAmount - (totalAmount / 100 * timelockData.unlockAtTGEPercentage);
         let startTime = TGE_TIMESTAMP + (60 * 60 * 24 * 30 * timelockData.releaseStartTimeInMonths);
@@ -46,7 +46,7 @@ async function main() {
             delegate
         );
         const tokenLockAddress = (await tx.wait()).events[2].args.contractAddress;
-        console.log(timelockData.name, "tokenlock address:", tokenLockAddress, "needs to be funded with", totalAmount, "HAT")
+        console.log(timelockData.name, "tokenlock address:", tokenLockAddress, "needs to be funded with", totalAmount, "HAT");
     }
   } catch (error) {
     console.error(error);
@@ -62,7 +62,7 @@ function csvToJSON(csv) {
     for (var i = 1; i < lines.length; i++) {
         var obj = {};
 
-        if(lines[i] == undefined || lines[i].trim() == "") {
+        if(lines[i] === undefined || lines[i].trim() === "") {
             continue;
         }
 
