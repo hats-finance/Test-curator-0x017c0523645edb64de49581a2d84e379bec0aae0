@@ -8,6 +8,10 @@ const func = async function (hre) {
 
     const { deployer } = await getNamedAccounts();
 
+    if (!config.hatArbitratorConf) {
+        return;
+    }
+
     await deploy('HATArbitrator', {
         from: deployer,
         args: [
