@@ -156,15 +156,54 @@ module.exports = {
         }
     },
     "sepolia": {
-        "governance": "0xFc9F1d127f8047B0F41e9eAC2Adc2e5279C568B7",
+        "governance": "0xFA6579F3Bb1793eFaB541de06763b872E11bfCBe",
         "timelockDelay": 300,
-        "executors": [], // proposal executors - if this empty, governance will be an executor
-        "rewardControllersConf": [], // no reward controllers
-        "hatToken": "",  // deploy a fresh HATToken contract
+        "executors": [
+            "0x0B7602011EC2B862Bc157fF08d27b1018aEb18d5",
+            "0x56E889664F5961452E5f4183AA13AF568198eaD2",
+            "0x1885B7c7a3AE1F35BA71C0392C13153A95c4914f"
+        ], // proposal executors - if this empty, governance will be an executor
         "hatVaultsRegistryConf": {
-            "bountyGovernanceHAT": "0",
-            "bountyHackerHATVested": "0"
-        }
+            "bountyGovernanceHAT": "1000",
+            "bountyHackerHATVested": "0",
+            "useKleros": false
+        },
+        "hatVaultsNFTConf": {
+            "merkleTreeIPFSRef": "",
+            "root": null,
+            "deadline": null
+        },
+        "rewardControllersConf": []
+        // "rewardControllersConf": [{
+        //     "startBlock": null,
+        //     "epochLength": "33230",
+        //     "epochRewardPerBlock": [
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000",
+        //         "1000000000000000000"
+        //     ]
+        // }],
     },
     "polygon": {
         "governance": "0xA5C6D757Ca69c92EeA05B22924d9774658e10c62",
