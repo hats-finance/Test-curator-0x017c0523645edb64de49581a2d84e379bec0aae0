@@ -8,7 +8,9 @@ const func = async function (hre) {
 
     const { deployer } = await getNamedAccounts();
 
-    if (!config.hatArbitratorConf) {
+    let useKleros = config.hatVaultsRegistryConf.useKleros;
+
+    if (!useKleros) {
         return;
     }
 
