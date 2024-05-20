@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IHATAirdrop.sol";
+import "../interfaces/IHATToken.sol";
 
 contract HATAirdropFactory is Ownable {
     error RedeemDataArraysLengthMismatch();
@@ -17,9 +18,14 @@ contract HATAirdropFactory is Ownable {
     using SafeERC20 for IERC20;
 
     mapping(address => bool) public isAirdrop;
+    IHATToken public HAT;
 
     event TokensWithdrawn(address indexed _owner, uint256 _amount);
     event HATAirdropCreated(address indexed _hatAirdrop, bytes _initData, IERC20 _token, uint256 _totalAmount);
+
+    constructor (IHATToken _HAT) {
+        HAT = _HAT;
+    }
 
     function withdrawTokens(IERC20 _token, uint256 _amount) external onlyOwner {
         address owner = msg.sender;
@@ -27,7 +33,7 @@ contract HATAirdropFactory is Ownable {
         emit TokensWithdrawn(owner, _amount);
     }
 
-    function redeemMultipleAirdrops(IHATAirdrop[] calldata _airdrops, uint256[] calldata _amounts, bytes32[][] calldata _proofs) external {
+    function redeemMultipleAirdrops(IHATAirdrop[] calldata _airdrops, uint256[] calldata _amounts, bytes32[][] calldata _proofs) public {
         if (_airdrops.length != _amounts.length || _airdrops.length != _proofs.length) {
             revert RedeemDataArraysLengthMismatch();
         }
@@ -44,6 +50,22 @@ contract HATAirdropFactory is Ownable {
                 ++i;
             }
         }
+    }
+
+    function redeemAndDelegateMultipleAirdrops(
+        IHATAirdrop[] calldata _airdrops,
+        uint256[] calldata _amounts,
+        bytes32[][] calldata _proofs,
+        address _delegatee,
+        uint256 _nonce,
+        uint256 _expiry,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+    ) external {
+        redeemMultipleAirdrops(_airdrops, _amounts, _proofs);
+
+        HAT.delegateBySig(_delegatee, _nonce, _expiry, _v, _r, _s);
     }
 
     function createHATAirdrop(

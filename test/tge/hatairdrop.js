@@ -1,5 +1,5 @@
 const utils = require("../utils.js");
-const ERC20Mock = artifacts.require("./ERC20Mock.sol");
+const HATToken = artifacts.require("./HATToken.sol");
 const TokenLockFactory = artifacts.require("./TokenLockFactory.sol");
 const HATTokenLock = artifacts.require("./HATTokenLock.sol");
 const HATAirdrop = artifacts.require("./HATAirdrop.sol");
@@ -13,6 +13,53 @@ const airdropData = require('./airdropData.json');
 const { assert } = require("chai");
 const { default: MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
+const { fromRpcSig } = require("ethereumjs-util");
+const ethSigUtil = require("eth-sig-util");
+const Wallet = require("ethereumjs-wallet").default;
+
+const EIP712Domain = [
+  { name: 'name', type: 'string' },
+  { name: 'version', type: 'string' },
+  { name: 'chainId', type: 'uint256' },
+  { name: 'verifyingContract', type: 'address' },
+];
+
+const Delegation = [
+  { name: "delegatee", type: "address" },
+  { name: "nonce", type: "uint256" },
+  { name: "expiry", type: "uint256" },
+];
+
+const buildDataDelegation = (
+  chainId,
+  verifyingContract,
+  delegatee,
+  nonce,
+  expiry
+) => ({
+  primaryType: "Delegation",
+  types: { EIP712Domain, Delegation },
+  domain: { name: "hats.finance", version: "1", chainId, verifyingContract },
+  message: { delegatee, nonce, expiry },
+});
+
+async function generateDelegationSig(wallet, token, delegatee, expiry) {
+  let chainId = await web3.eth.net.getId();
+  let nonce = await token.nonces(wallet.getAddressString());
+
+  const data = buildDataDelegation(
+    chainId,
+    token.address,
+    delegatee,
+    nonce,
+    expiry
+  );
+  const signature = ethSigUtil.signTypedMessage(wallet.getPrivateKey(), {
+    data,
+  });
+  const { v, r, s } = fromRpcSig(signature);
+  return { v, r, s };
+}
 
 function hashTokens(account, amount) {
   return Buffer.from(
@@ -41,7 +88,8 @@ contract("HATAirdrop", (accounts) => {
   let initData;
 
   async function setupHATAirdrop(useLock = true) {
-    token = await ERC20Mock.new("Staking", "STK");
+    token = await HATToken.new(accounts[0]);
+    await token.setTransferable({from: accounts[0]});
 
     totalAmount = 0;
 
@@ -62,7 +110,7 @@ contract("HATAirdrop", (accounts) => {
     periods = 90;
 
     hatAirdropImplementation = await HATAirdrop.new();
-    hatAirdropFactory = await HATAirdropFactory.new();
+    hatAirdropFactory = await HATAirdropFactory.new(token.address);
 
     initData = IHATAirdrop.encodeFunctionData("initialize", [
       "QmSUXfYsk9HgrMBa7tgp3MBm8FGwDF9hnVaR9C1PMoFdS3",
@@ -94,6 +142,7 @@ contract("HATAirdrop", (accounts) => {
     assert.equal(tx.logs[0].args._totalAmount, totalAmount);
     hatAirdrop = await HATAirdrop.at(airdropAddress);
 
+    await token.setMinter(accounts[0], totalAmount);
     await token.mint(hatAirdropFactory.address, totalAmount);
   }
 
@@ -189,6 +238,7 @@ contract("HATAirdrop", (accounts) => {
 
     const hatAirdrop2 = await HATAirdrop.at(tx.logs[0].args._hatAirdrop);
 
+    await token.setMinter(accounts[0], totalAmount);
     await token.mint(hatAirdropFactory.address, totalAmount);
 
     await utils.increaseTime(7 * 24 * 3600);
@@ -200,6 +250,75 @@ contract("HATAirdrop", (accounts) => {
       await hatAirdropFactory.redeemMultipleAirdrops([hatAirdrop.address, hatAirdrop2.address], [amount, amount], [proof, proof], { from: accounts[i] });
       i++;
       assert.equal((await token.balanceOf(hatAirdropFactory.address)).toString(), currentBalance.sub(web3.utils.toBN(amount * 2)).toString());
+    }
+
+    assert.equal((await token.balanceOf(hatAirdropFactory.address)).toString(), "0");
+  });
+
+  it("Redeem and delegate all from multiple airdrops", async () => {
+    await setupHATAirdrop(false);
+
+    const privateKeys = [
+      "c5e8f61d1ab959b397eecc0a37a6517b8e67a0e7cf1f4bce5591f3ed80199122",
+      "d49743deccbccc5dc7baa8e69e5be03298da8688a15dd202e20f15d5e0e9a9fb",
+      "23c601ae397441f3ef6f1075dcb0031ff17fb079837beadaf3c84d96c6f3e569",
+      "ee9d129c1997549ee09c0757af5939b2483d80ad649a0eda68e8b0357ad11131",
+      "87630b2d1de0fbd5044eb6891b3d9d98c34c8d310c852f98550ba774480e47cc",
+      "275cc4a2bfd4f612625204a20a2280ab53a6da2d14860c47a9f5affe58ad86d4"
+    ];
+
+    const initData2 = IHATAirdrop.encodeFunctionData("initialize", [
+      "QmSUXfYsk9HgrMBa7tgp3MBm8FGwDF9hnVaR9C1PMoFdS3",
+      merkleTree.getHexRoot(),
+      startTime,
+      endTime,
+      (await web3.eth.getBlock("latest")).timestamp + 14 * 24 * 3600,
+      periods,
+      token.address,
+      tokenLockFactory.address
+    ]);
+
+    let tx = await hatAirdropFactory.createHATAirdrop(
+      hatAirdropImplementation.address,
+      initData2,
+      token.address,
+      totalAmount
+    );
+
+    const hatAirdrop2 = await HATAirdrop.at(tx.logs[0].args._hatAirdrop);
+
+    await token.setMinter(accounts[0], totalAmount);
+    await token.mint(hatAirdropFactory.address, totalAmount);
+
+    await utils.increaseTime(7 * 24 * 3600);
+
+    let i = 0;
+    for (const [account, amount] of Object.entries(airdropData)) {
+      const privateKeyBuffer = Buffer.from(privateKeys[i], "hex");
+      const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
+
+      let currentBlockTimestamp = (await web3.eth.getBlock("latest")).timestamp;
+      let expiry = currentBlockTimestamp + 7 * 24 * 3600;
+
+      let { v, r, s } = await generateDelegationSig(wallet, token, accounts[2], expiry);
+
+      let currentBalance = await token.balanceOf(hatAirdropFactory.address);
+      const proof = merkleTree.getHexProof(hashTokens(account, amount));
+      await hatAirdropFactory.redeemAndDelegateMultipleAirdrops(
+        [hatAirdrop.address, hatAirdrop2.address],
+        [amount, amount],
+        [proof, proof],
+        accounts[2],
+        await token.nonces(wallet.getAddressString()),
+        expiry,
+        v,
+        r,
+        s,
+        { from: accounts[i] }
+      );
+      i++;
+      assert.equal((await token.balanceOf(hatAirdropFactory.address)).toString(), currentBalance.sub(web3.utils.toBN(amount * 2)).toString());
+      assert.equal(await token.delegates(account), accounts[2]);
     }
 
     assert.equal((await token.balanceOf(hatAirdropFactory.address)).toString(), "0");

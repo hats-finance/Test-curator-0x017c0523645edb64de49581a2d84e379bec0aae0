@@ -10,6 +10,23 @@
 
 ## Methods
 
+### HAT
+
+```solidity
+function HAT() external view returns (contract IHATToken)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | contract IHATToken | undefined |
+
 ### createHATAirdrop
 
 ```solidity
@@ -96,6 +113,30 @@ function predictHATAirdropAddress(address _implementation, bytes _initData) exte
 | Name | Type | Description |
 |---|---|---|
 | _0 | address | undefined |
+
+### redeemAndDelegateMultipleAirdrops
+
+```solidity
+function redeemAndDelegateMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amounts, bytes32[][] _proofs, address _delegatee, uint256 _nonce, uint256 _expiry, uint8 _v, bytes32 _r, bytes32 _s) external nonpayable
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _airdrops | contract IHATAirdrop[] | undefined |
+| _amounts | uint256[] | undefined |
+| _proofs | bytes32[][] | undefined |
+| _delegatee | address | undefined |
+| _nonce | uint256 | undefined |
+| _expiry | uint256 | undefined |
+| _v | uint8 | undefined |
+| _r | bytes32 | undefined |
+| _s | bytes32 | undefined |
 
 ### redeemMultipleAirdrops
 
