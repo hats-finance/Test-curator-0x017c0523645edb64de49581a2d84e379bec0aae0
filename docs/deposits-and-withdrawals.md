@@ -1,5 +1,5 @@
 
-# Deposists and Withdrawals
+# Deposits and Withdrawals
 
 Hats finance provides crowd-sourced bug bounties. Parties that are interested in helping protect a project can deposit funds in the Vault. 
 
