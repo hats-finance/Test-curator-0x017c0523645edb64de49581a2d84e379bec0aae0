@@ -19,6 +19,7 @@ for (const airdropData of airdropJsons) {
         for (const amount of Object.values(airdropData[beneficiary]["token_eligibility"])) {
             airdropTree[beneficiary] = web3.utils.toBN(airdropTree[beneficiary]).add(web3.utils.toBN(amount)).toString();
         }
+        airdropTree[beneficiary] = web3.utils.toBN(airdropTree[beneficiary]).mul(web3.utils.toBN("10")).toString();
     }
 }
 
