@@ -28,7 +28,7 @@ By default, all the these roles, except the `committee`, are assigned to the Hat
 | `withdrawRequestEnablePeriod`| | `registry.owner`| global | 7 days | >= 6 hours, <= 100 days | `registry.setWithdrawRequestParams` |
 | **SUBMISSION** |
  `claimFee` | fee to be paid when submitting a claim | `registry.owner`| global | 0 | - | `registry.setClaimFee` |
-| **PAYOUT** see [payout](payout.md) for details|
+| **PAYOUT** see [payout](payout.md) for details|| |
 | `committee` | arbitrates claims and initiates payouts |`vault.owner` | vault |  ||`vault.setCommittee`  (only if committee has not checked in yet) |
 | `committeeCheckedIn` | |`vault.committee` | vault | | | `vault.committeeCheckIn()` |
 | `maxBounty` |maximum amountthat can be paid out for a claim| `vault.owner` | vault | | <= 90% | `vault.setPendingMaxBounty`, `vault.setMaxBounty` | noActiveClaim |
