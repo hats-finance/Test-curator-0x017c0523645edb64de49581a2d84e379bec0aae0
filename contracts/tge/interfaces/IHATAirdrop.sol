@@ -3,7 +3,9 @@
 
 pragma solidity 0.8.16;
 
+import "../../interfaces/IHATVault.sol";
+
 
 interface IHATAirdrop {
-    function redeem(address _account, uint256 _amount, bytes32[] calldata _proof) external;
+    function redeem(address _account, uint256 _amount, bytes32[] calldata _proof, IHATVault _depositIntoVault, uint256 _amountToDeposit, uint256 _minShares) external;
 }

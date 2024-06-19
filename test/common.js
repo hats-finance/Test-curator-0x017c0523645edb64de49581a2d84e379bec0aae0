@@ -86,13 +86,17 @@ const setup = async function(
     rewardInVaults : 2500000,
     challengePeriod: 60 * 60 * 24,
     setDefaultArbitrator: true,
-    isTokenLockRevocable: false
+    isTokenLockRevocable: false,
+    stakingToken: null
   };
   options = { ...defaultOptions, ...options};
   const committee = accounts[1];
   hatToken = await HATTokenMock.new(accounts[0]);
   await hatToken.setTransferable({from: accounts[0]});
   stakingToken = await ERC20Mock.new("Staking", "STK");
+  if (options.stakingToken) {
+    stakingToken = options.stakingToken;
+  }
   let wethAddress = utils.NULL_ADDRESS;
   if (options.weth) {
     wethAddress = stakingToken.address;

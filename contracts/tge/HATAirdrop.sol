@@ -18,6 +18,7 @@ contract HATAirdrop is IHATAirdrop, Initializable {
     error InvalidMerkleProof();
     error CannotRecoverBeforeDeadline();
     error RedeemerMustBeBeneficiary();
+    error InvalidAmountToDeposit();
 
     using SafeERC20Upgradeable for IERC20Upgradeable;
 
@@ -71,7 +72,7 @@ contract HATAirdrop is IHATAirdrop, Initializable {
         emit MerkleTreeSet(_merkleTreeIPFSRef, _root, _startTime, _deadline);
     }
 
-    function redeem(address _account, uint256 _amount, bytes32[] calldata _proof) external {
+    function redeem(address _account, uint256 _amount, bytes32[] calldata _proof, IHATVault _depositIntoVault, uint256 _amountToDeposit, uint256 _minShares) external {
         if (msg.sender != _account && msg.sender != factory) {
             revert RedeemerMustBeBeneficiary();
         }
@@ -102,7 +103,17 @@ contract HATAirdrop is IHATAirdrop, Initializable {
             );
             token.safeTransferFrom(factory, _tokenLock, _amount);
         } else {
-            token.safeTransferFrom(factory, _account, _amount);
+            if (address(_depositIntoVault) != address(0)) {
+                if (_amountToDeposit > _amount || _amountToDeposit == 0) {
+                    revert InvalidAmountToDeposit();
+                }
+                token.safeApprove(address(_depositIntoVault), _amountToDeposit);
+                token.safeTransferFrom(factory, address(this), _amountToDeposit);
+                _depositIntoVault.deposit(_amountToDeposit, _account, _minShares);
+                token.safeTransferFrom(factory, _account, _amount - _amountToDeposit);
+            } else {
+                token.safeTransferFrom(factory, _account, _amount);
+            }
         }
        
         emit TokensRedeemed(_account, _tokenLock, _amount);

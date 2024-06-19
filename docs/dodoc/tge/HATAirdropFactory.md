@@ -117,7 +117,7 @@ function predictHATAirdropAddress(address _implementation, bytes _initData) exte
 ### redeemAndDelegateMultipleAirdrops
 
 ```solidity
-function redeemAndDelegateMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amounts, bytes32[][] _proofs, address _delegatee, uint256 _nonce, uint256 _expiry, uint8 _v, bytes32 _r, bytes32 _s) external nonpayable
+function redeemAndDelegateMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amounts, bytes32[][] _proofs, contract IHATVault[] _depositIntoVaults, uint256[] _amountsToDeposit, uint256[] _minShares, address _delegatee, uint256 _nonce, uint256 _expiry, uint8 _v, bytes32 _r, bytes32 _s) external nonpayable
 ```
 
 
@@ -131,6 +131,9 @@ function redeemAndDelegateMultipleAirdrops(contract IHATAirdrop[] _airdrops, uin
 | _airdrops | contract IHATAirdrop[] | undefined |
 | _amounts | uint256[] | undefined |
 | _proofs | bytes32[][] | undefined |
+| _depositIntoVaults | contract IHATVault[] | undefined |
+| _amountsToDeposit | uint256[] | undefined |
+| _minShares | uint256[] | undefined |
 | _delegatee | address | undefined |
 | _nonce | uint256 | undefined |
 | _expiry | uint256 | undefined |
@@ -141,7 +144,7 @@ function redeemAndDelegateMultipleAirdrops(contract IHATAirdrop[] _airdrops, uin
 ### redeemMultipleAirdrops
 
 ```solidity
-function redeemMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amounts, bytes32[][] _proofs) external nonpayable
+function redeemMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amounts, bytes32[][] _proofs, contract IHATVault[] _depositIntoVaults, uint256[] _amountsToDeposit, uint256[] _minShares) external nonpayable
 ```
 
 
@@ -155,6 +158,9 @@ function redeemMultipleAirdrops(contract IHATAirdrop[] _airdrops, uint256[] _amo
 | _airdrops | contract IHATAirdrop[] | undefined |
 | _amounts | uint256[] | undefined |
 | _proofs | bytes32[][] | undefined |
+| _depositIntoVaults | contract IHATVault[] | undefined |
+| _amountsToDeposit | uint256[] | undefined |
+| _minShares | uint256[] | undefined |
 
 ### renounceOwnership
 
