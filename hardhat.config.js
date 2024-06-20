@@ -9,6 +9,7 @@ require("hardhat-gas-reporter");
 require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config();
 require("@primitivefi/hardhat-dodoc");
+require("@oasisprotocol/sapphire-hardhat");
 
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -132,6 +133,11 @@ module.exports = {
       accounts: [process.env.GNOSIS_PK],
       gasPrice: "auto",
       gas: "auto",
+    },
+    sapphire: {
+      url: "https://sapphire.oasis.io",
+      accounts: [process.env.SAPPHIRE_PK],
+      chainId: 0x5afe,
     },
     hardhat: {
       allowUnlimitedContractSize: true,

@@ -441,4 +441,29 @@ module.exports = {
             "deadline": null
         }
     },
+    "sapphire": {
+        "governance": "0xf2935671015c896D5E1fE4c97caF111F5eEe2b3c",
+        "timelockDelay": 604800,
+        "executors": [
+            "0xfe46D9193BBCE8c590298d77b6f8dB0e619c7FF7",
+            "0xe24886AC31c25B544092542aD55aa484FbBF506B",
+            "0xe707ABbDA8146d2d3f3341E9B375Cb1fc78526d8",
+            "0x335DaFb8e708151e7e91C9Fe6F4AF9755877c205",
+            "0x2B6656e212f315D3C2DD477FE7EBFb3A86bb1c94",
+            "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
+            "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
+        ],
+        "rewardControllersConf": [],
+        "hatToken": "0x0000000000000000000000000000000000000000", // USDC
+        "hatVaultsRegistryConf": {
+            "swapToken": "0x0000000000000000000000000000000000000000", // USDC
+            "bountyGovernanceHAT": "1000",
+            "bountyHackerHATVested": "0"
+        },
+        "hatVaultsNFTConf": {
+            "merkleTreeIPFSRef": "",
+            "root": null,
+            "deadline": null
+        }
+    },
 };
