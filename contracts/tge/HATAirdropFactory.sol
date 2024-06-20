@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IHATAirdrop.sol";
 import "../interfaces/IHATToken.sol";
+import "../interfaces/IHATVault.sol";
 
 contract HATAirdropFactory is Ownable {
     error RedeemDataArraysLengthMismatch();
@@ -33,8 +34,20 @@ contract HATAirdropFactory is Ownable {
         emit TokensWithdrawn(owner, _amount);
     }
 
-    function redeemMultipleAirdrops(IHATAirdrop[] calldata _airdrops, uint256[] calldata _amounts, bytes32[][] calldata _proofs) public {
-        if (_airdrops.length != _amounts.length || _airdrops.length != _proofs.length) {
+    function redeemMultipleAirdrops(
+        IHATAirdrop[] calldata _airdrops,
+        uint256[] calldata _amounts,
+        bytes32[][] calldata _proofs,
+        IHATVault[] calldata _depositIntoVaults,
+        uint256[] calldata _amountsToDeposit,
+        uint256[] calldata _minShares
+    ) public {
+        if (
+            _airdrops.length != _amounts.length ||
+            _airdrops.length != _proofs.length ||
+            _airdrops.length != _depositIntoVaults.length ||
+            _airdrops.length != _amountsToDeposit.length ||
+            _airdrops.length != _minShares.length) {
             revert RedeemDataArraysLengthMismatch();
         }
 
@@ -44,7 +57,7 @@ contract HATAirdropFactory is Ownable {
                 revert ContractIsNotHATAirdrop();
             }
 
-            _airdrops[i].redeem(caller, _amounts[i], _proofs[i]);
+            _airdrops[i].redeem(caller, _amounts[i], _proofs[i], _depositIntoVaults[i], _amountsToDeposit[i], _minShares[i]);
 
             unchecked {
                 ++i;
@@ -56,6 +69,9 @@ contract HATAirdropFactory is Ownable {
         IHATAirdrop[] calldata _airdrops,
         uint256[] calldata _amounts,
         bytes32[][] calldata _proofs,
+        IHATVault[] calldata _depositIntoVaults,
+        uint256[] calldata _amountsToDeposit,
+        uint256[] calldata _minShares,
         address _delegatee,
         uint256 _nonce,
         uint256 _expiry,
@@ -63,7 +79,7 @@ contract HATAirdropFactory is Ownable {
         bytes32 _r,
         bytes32 _s
     ) external {
-        redeemMultipleAirdrops(_airdrops, _amounts, _proofs);
+        redeemMultipleAirdrops(_airdrops, _amounts, _proofs, _depositIntoVaults, _amountsToDeposit, _minShares);
 
         HAT.delegateBySig(_delegatee, _nonce, _expiry, _v, _r, _s);
     }
