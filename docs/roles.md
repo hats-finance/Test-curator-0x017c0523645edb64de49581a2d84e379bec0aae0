@@ -81,6 +81,11 @@ See [parameters](./parameters.md) for the list of parameters managed by the owne
 - set to governance multisig
 - can call `cancel` and cancel any pending operation
 
+## `HATTimelockController.MANAGER_ROLE`
+
+- set to "anyone"
+- can call `setVaultDescription` and `setVaultVisibility`
+
 
 ## The following functions in HATVaults are **not** subject to a timelock:
   - `approveClaim`

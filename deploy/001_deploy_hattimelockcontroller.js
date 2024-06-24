@@ -25,12 +25,22 @@ const func = async function (hre) {
     executors.push(governance);
   }
 
+  let managers = config.managers;
+  if (!managers && network.name === "hardhat") {
+    managers = [governance];
+  }
+
+  if (managers.indexOf(governance) === -1) {
+    managers.push(governance);
+  }
+
   await deploy('HATTimelockController', {
     from: deployer,
     args: [
       hatGovernanceDelay, // minDelay
       [governance], // proposers
-      executors // executors
+      executors, // executors
+      managers // managers
     ],
     log: true,
   });
