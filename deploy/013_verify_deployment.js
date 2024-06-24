@@ -93,7 +93,7 @@ const func = async function (hre) {
         );
     }
 
-    for (manager of manager) {
+    for (manager of managers) {
         // Each executor has the execute role
         verify(
             await read('HATTimelockController', {}, 'hasRole', MANAGER_ROLE, manager),
