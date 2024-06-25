@@ -81,7 +81,8 @@ const setup = async function(
   hatTimelockController = await HATTimelockController.new(
     hatGovernanceDelay,
     [accounts[0]],
-    [accounts[0]]
+    [accounts[0]],
+    [accounts[1]]
   );
 
   await hatToken.setMinter(
@@ -171,6 +172,13 @@ contract("HatTimelockController", (accounts) => {
       await hatTimelockController.hasRole(
         await hatTimelockController.EXECUTOR_ROLE(),
         accounts[0]
+      ),
+      true
+    );
+    assert.equal(
+      await hatTimelockController.hasRole(
+        await hatTimelockController.MANAGER_ROLE(),
+        accounts[1]
       ),
       true
     );
@@ -324,9 +332,9 @@ contract("HatTimelockController", (accounts) => {
     await setup(accounts);
     try {
       await hatTimelockController.setVaultVisibility(vault.address, true, {
-        from: accounts[1],
+        from: accounts[0],
       });
-      assert(false, "only governance");
+      assert(false, "only manager");
     } catch (ex) {
       assertVMException(ex);
     }
@@ -338,7 +346,7 @@ contract("HatTimelockController", (accounts) => {
       assertVMException(ex);
     }
     assert.equal(await hatVaultsRegistry.isVaultVisible(vault.address), false);
-    await hatTimelockController.setVaultVisibility(vault.address, true);
+    await hatTimelockController.setVaultVisibility(vault.address, true, { from: accounts[1] });
     assert.equal(await hatVaultsRegistry.isVaultVisible(vault.address), true);
     await hatTimelockController.setAllocPoint(vault.address, rewardController.address, 200);
 
@@ -349,8 +357,8 @@ contract("HatTimelockController", (accounts) => {
     await stakingToken.mint(staker, web3.utils.toWei("1"));
     await vault.deposit(web3.utils.toWei("1"), staker, { from: staker });
     assert.equal(await hatToken.balanceOf(staker), 0);
-    await hatTimelockController.setVaultVisibility(vault.address, true);
-    await hatTimelockController.setVaultVisibility(vault.address, true);
+    await hatTimelockController.setVaultVisibility(vault.address, true, { from: accounts[1] });
+    await hatTimelockController.setVaultVisibility(vault.address, true, { from: accounts[1] });
     await hatTimelockController.setAllocPoint(vault.address, rewardController.address, 200);
     let expectedReward = await calculateExpectedReward(staker);
     assert.equal(await stakingToken.balanceOf(staker), 0);
@@ -370,9 +378,9 @@ contract("HatTimelockController", (accounts) => {
     await setup(accounts);
     try {
       await hatTimelockController.setVaultDescription(vault.address, "descHash", {
-        from: accounts[1],
+        from: accounts[0],
       });
-      assert(false, "only governance");
+      assert(false, "only manager");
     } catch (ex) {
       assertVMException(ex);
     }
@@ -383,7 +391,7 @@ contract("HatTimelockController", (accounts) => {
     } catch (ex) {
       assertVMException(ex);
     }
-    await hatTimelockController.setVaultDescription(vault.address, "descHash");
+    await hatTimelockController.setVaultDescription(vault.address, "descHash", { from: accounts[1] });
   });
 
   it("Pause vault deposits", async () => {
