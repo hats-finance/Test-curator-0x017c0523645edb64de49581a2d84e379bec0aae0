@@ -11,6 +11,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F", // USDC
         "hatVaultsRegistryConf": {
@@ -36,6 +37,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F", // USDC
         "hatVaultsRegistryConf": {
@@ -55,6 +57,7 @@ module.exports = {
         "executors": [
             "0x0B7602011EC2B862Bc157fF08d27b1018aEb18d5"
         ],
+        "managers": [],
         "rewardControllersConf": [{
             "startBlock": null,
             "epochLength": "195200",
@@ -147,6 +150,7 @@ module.exports = {
             "0x56E889664F5961452E5f4183AA13AF568198eaD2",
             "0x1885B7c7a3AE1F35BA71C0392C13153A95c4914f"
         ],
+        "managers": [],
         // "hatToken": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // USDC
         "hatVaultsRegistryConf": {
             // "swapToken": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // USDC
@@ -201,6 +205,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC
         "hatVaultsRegistryConf": {
@@ -226,6 +231,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
         "hatVaultsRegistryConf": {
@@ -251,6 +257,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", // USDC
         "hatVaultsRegistryConf": {
@@ -276,6 +283,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8", // USDC
         "hatVaultsRegistryConf": {
@@ -301,6 +309,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
         "hatVaultsRegistryConf": {
