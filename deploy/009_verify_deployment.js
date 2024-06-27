@@ -27,18 +27,29 @@ const func = async function (hre) {
         executors.push(governance);
     }
 
+    let managers = config["managers"];
+    if (!managers || managers.length === 0) {
+        managers = [governance];
+    }
+
+    if (managers.indexOf(governance) === -1) {
+        managers.push(governance);
+    }
+
     let hatGovernanceDelay = config["timelockDelay"];
 
     const TIMELOCK_ADMIN_ROLE = await read('HATTimelockController', {}, 'TIMELOCK_ADMIN_ROLE');
     const PROPOSER_ROLE = await read('HATTimelockController', {}, 'PROPOSER_ROLE');
     const CANCELLER_ROLE = await read('HATTimelockController', {}, 'CANCELLER_ROLE');
     const EXECUTOR_ROLE = await read('HATTimelockController', {}, 'EXECUTOR_ROLE');
+    const MANAGER_ROLE = await read('HATTimelockController', {}, 'MANAGER_ROLE');
 
     // print some general info before diagnosing
     console.log("************************************************");
     console.log("deployer: ", deployer);
     console.log("governance: ", governance);
     console.log("executors: ", executors);
+    console.log("managers: ", managers);
     console.log("************************************************");
     console.log("TIMELOCK_ADMIN_ROLE", TIMELOCK_ADMIN_ROLE);
     console.log("PROPOSER_ROLE", PROPOSER_ROLE);
@@ -78,6 +89,14 @@ const func = async function (hre) {
         verify(
             await read('HATTimelockController', {}, 'hasRole', EXECUTOR_ROLE, executor),
             "Executor " + executor + " has the execute role"
+        );
+    }
+
+    for (manager of managers) {
+        // Each manager has the manager role
+        verify(
+            await read('HATTimelockController', {}, 'hasRole', MANAGER_ROLE, manager),
+            "Manager " + manager + " has the execute role"
         );
     }
 
@@ -124,8 +143,8 @@ const func = async function (hre) {
       `TIMELOCK_ADMIN_ROLE should NOT be the admin role of the deployer ${deployer}`
     );
     // Roles granted should be the 4 + number of executors
-    // (renounced deployer role, timelock admin of itself, governance proposer and canceller roles, and executor role to the executors)
-    const roleGrantEventsCount = 3 + executors.length;
+    // (renounced deployer role, timelock admin of itself, governance proposer and canceller roles, executor role to the executors, and manager role to the managers)
+    const roleGrantEventsCount = 3 + executors.length + managers.length;
     verify(
       logs.length === roleGrantEventsCount,
       `No unexpected roles were granted (expected ${roleGrantEventsCount}, got ${logs.length})`
@@ -141,6 +160,13 @@ const func = async function (hre) {
         };
         for (executor of executors) {
             EXPECTED_ROLES[executor] = [EXECUTOR_ROLE];
+        }
+        for (manager of managers) {
+            if (EXPECTED_ROLES[manager]) {
+                EXPECTED_ROLES[manager].push(MANAGER_ROLE);
+            } else {
+                EXPECTED_ROLES[manager] = [MANAGER_ROLE];
+            }
         }
         for (log of logs) {
             const role = log.args.role;
