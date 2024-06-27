@@ -13,11 +13,11 @@ const func = async function (hre) {
         governance = deployer;
     }
 
-    await deploy('FeeForwarder', {
+    await deploy('AutomatedFeeForwarder', {
         from: deployer,
-        args: [governance],
+        args: [(await deployments.get('HATTimelockController')).address, (await deployments.get('HATVaultsRegistry')).address, governance],
         log: true,
     });
 };
 module.exports = func;
-func.tags = ['FeeForwarder'];
+func.tags = ['AutomatedFeeForwarder'];
