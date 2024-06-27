@@ -31,6 +31,7 @@ In the file [config.js](../config.js), we add a section for the sepolia network:
       "governance": "0xFc9F1d127f8047B0F41e9eAC2Adc2e5279C568B7",
       "timelockDelay": 300,
       "executors": [], // proposal executors - if this empty, governance will be an executor
+      "managers": [], // system managers - if this empty, governance will be a manager
       "rewardControllersConf": [], // no reward controllers
       "hatToken": "",  // deploy a fresh HATToken contract
       "hatVaultsRegistryConf": {

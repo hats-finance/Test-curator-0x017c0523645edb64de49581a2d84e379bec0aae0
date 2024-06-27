@@ -61,6 +61,23 @@ function EXECUTOR_ROLE() external view returns (bytes32)
 |---|---|---|
 | _0 | bytes32 | undefined |
 
+### MANAGER_ROLE
+
+```solidity
+function MANAGER_ROLE() external view returns (bytes32)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bytes32 | undefined |
+
 ### PROPOSER_ROLE
 
 ```solidity

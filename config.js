@@ -11,6 +11,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F", // USDC
         "hatVaultsRegistryConf": {
@@ -36,6 +37,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F", // USDC
         "hatVaultsRegistryConf": {
@@ -55,6 +57,7 @@ module.exports = {
         "executors": [
             "0x0B7602011EC2B862Bc157fF08d27b1018aEb18d5"
         ],
+        "managers": [],
         "rewardControllersConf": [{
             "startBlock": null,
             "epochLength": "195200",
@@ -163,6 +166,7 @@ module.exports = {
             "0x56E889664F5961452E5f4183AA13AF568198eaD2",
             "0x1885B7c7a3AE1F35BA71C0392C13153A95c4914f"
         ], // proposal executors - if this empty, governance will be an executor
+        "managers": [],
         "hatVaultsRegistryConf": {
             "bountyGovernanceHAT": "1000",
             "bountyHackerHATVested": "0",
@@ -217,6 +221,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC
         "hatVaultsRegistryConf": {
@@ -245,6 +250,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", // USDC
         "hatVaultsRegistryConf": {
@@ -272,6 +278,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", // USDC
         "hatVaultsRegistryConf": {
@@ -299,6 +306,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8", // USDC
         "hatVaultsRegistryConf": {
@@ -326,6 +334,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // USDC
         "hatVaultsRegistryConf": {
@@ -353,6 +362,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x4200000000000000000000000000000000000006", // WETH
         "hatVaultsRegistryConf": {
@@ -378,6 +388,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "NEED ADDRESS", // USDC
         "hatVaultsRegistryConf": {
@@ -403,6 +414,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xd86e243fc0007e6226b07c9a50c9d70d78299eb5", // USDC
         "hatVaultsRegistryConf": {
@@ -428,6 +440,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC
         "hatVaultsRegistryConf": {
@@ -453,6 +466,7 @@ module.exports = {
             "0xF6aEF099e4473E08bed75E0BB1252C4cdAd96416",
             "0x42eefBC05794e71a0f7e7B63E5EcB52320345eBE"
         ],
+        "managers": [],
         "rewardControllersConf": [],
         "hatToken": "0x0000000000000000000000000000000000000000", // USDC
         "hatVaultsRegistryConf": {

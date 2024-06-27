@@ -7,13 +7,22 @@ import "@openzeppelin/contracts/governance/TimelockController.sol";
 import "./HATGovernanceArbitrator.sol";
 
 contract HATTimelockController is TimelockController {
+    bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
     constructor(
         uint256 _minDelay,
         address[] memory _proposers,
-        address[] memory _executors
+        address[] memory _executors,
+        address[] memory _managers
     // solhint-disable-next-line no-empty-blocks
-    ) TimelockController(_minDelay, _proposers, _executors, address(0)) {}
+    ) TimelockController(_minDelay, _proposers, _executors, address(0)) {
+        _setRoleAdmin(MANAGER_ROLE, TIMELOCK_ADMIN_ROLE);
+
+        // register managers
+        for (uint256 i = 0; i < _managers.length; ++i) {
+            _setupRole(MANAGER_ROLE, _managers[i]);
+        }
+    }
     
     // The following functions are not subject to the timelock
 
@@ -29,7 +38,7 @@ contract HATTimelockController is TimelockController {
         _claimsManager.setCommittee(_committee);
     }
 
-    function setVaultDescription(IHATVault _vault, string memory _descriptionHash) external onlyRole(PROPOSER_ROLE) {
+    function setVaultDescription(IHATVault _vault, string memory _descriptionHash) external onlyRole(MANAGER_ROLE) {
         _vault.setVaultDescription(_descriptionHash);
     }
 
@@ -37,7 +46,7 @@ contract HATTimelockController is TimelockController {
         _vault.setDepositPause(_depositPause);
     }
 
-    function setVaultVisibility(IHATVault _vault, bool _visible) external onlyRole(PROPOSER_ROLE) {
+    function setVaultVisibility(IHATVault _vault, bool _visible) external onlyRole(MANAGER_ROLE) {
         _vault.registry().setVaultVisibility(address(_vault), _visible);
     }
 
