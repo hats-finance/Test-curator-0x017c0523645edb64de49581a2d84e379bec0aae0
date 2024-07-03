@@ -719,6 +719,28 @@ contract("HatTimelockController", (accounts) => {
     );
   });
 
+  it("addRewardController", async () => {
+    await setup(accounts);
+
+    try {
+      await hatTimelockController.addRewardController(vault.address, accounts[1], {
+        from: accounts[1],
+      });
+      assert(false, "only governance");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    try {
+      await vault.addRewardController(accounts[1]);
+      assert(false, "only governance");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    await hatTimelockController.addRewardController(vault.address, accounts[1]);
+  });
+
   it("setEmergencyPaused", async () => {
     await setup(accounts);
 
