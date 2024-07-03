@@ -302,6 +302,26 @@ contract("HatTimelockController", (accounts) => {
     await vault.deposit(web3.utils.toWei("1"), staker, { from: staker });
   });
 
+  it("Add reward controller", async () => {
+    await setup(accounts);
+    try {
+      await hatTimelockController.addRewardController(vault.address, accounts[1], {
+        from: accounts[1],
+      });
+      assert(false, "only governance");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    try {
+      await vault.addRewardController(accounts[1]);
+      assert(false, "only governance");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+    await hatTimelockController.addRewardController(vault.address, accounts[1], { from: accounts[0] });
+  });
+
   it("swapAndSend", async () => {
     await setup(accounts);
     var staker = accounts[4];
