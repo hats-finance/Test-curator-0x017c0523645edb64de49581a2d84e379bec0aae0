@@ -33,11 +33,11 @@ By default, all the these roles, except the `committee`, are assigned to the Hat
 | `committeeCheckedIn` | |`vault.committee` | vault | | | `vault.committeeCheckIn()` |
 | `maxBounty` |maximum amountthat can be paid out for a claim| `vault.owner` | vault | | <= 90% | `vault.setPendingMaxBounty`, `vault.setMaxBounty` | noActiveClaim |
 | `bountySplit.hacker` | part of the payout that goes directly to the submitter | `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
-| `bountyHackerHATVested`| part of the payout that is converted to HATs and vested to the user|`registry.owner` | vault | | +bountyGovernanceHAT <= 20% | `vault.setHATBountySplit` |
-| `defaultBountyHackerHATVested` | protocol-level default value | `registry.owner`| global | | +defaultBountyGovernanceHAT <= 20% | `registry.setDefaultHATBountySplit` |
+| `bountyHackerHATVested`| part of the payout that is converted to HATs and vested to the user|`registry.owner` | vault | | +bountyGovernanceHAT <= 35% | `vault.setHATBountySplit` |
+| `defaultBountyHackerHATVested` | protocol-level default value | `registry.owner`| global | | +defaultBountyGovernanceHAT <= 35% | `registry.setDefaultHATBountySplit` |
 | `bountySplit.hackerVested` | part | `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
-| `bountyGovernanceHAT`  | percentage of the payout that goes to HATs governance |`registry.owner`| vault | | +bountyHackerHatVested <= 20% | `vault.setHATBountySplit` |
-| `defaultBountyGovernanceHAT` | protocol-level default value| `registry.owner`| global | | +defaultBountyHackerHatVested <= 20% | `registry.setDefaultHATBountySplit` |
+| `bountyGovernanceHAT`  | percentage of the payout that goes to HATs governance |`registry.owner`| vault | | +bountyHackerHatVested <= 35% | `vault.setHATBountySplit` |
+| `defaultBountyGovernanceHAT` | protocol-level default value| `registry.owner`| global | | +defaultBountyHackerHatVested <= 35% | `registry.setDefaultHATBountySplit` |
 | `bountySplit.committee` | part of the payout that goes to the committee|  `vault.owner` | vault | | sum(bountySplit) = 100%, max 10% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
 | `hatVestingDuration` | | `registry.owner`| global | 90 days | < 180 days |  `registry.setHatVestingParams` |
 | `hatVestingPeriods`  ||`registry.owner`| global | 90 | > 0, <= hatVestingDuration |  `registry.setHatVestingParams` |
