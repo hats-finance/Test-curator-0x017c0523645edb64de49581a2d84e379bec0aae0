@@ -14,7 +14,7 @@ By default, all the these roles, except the `committee`, are assigned to the Hat
 | `isEmergencyPaused` | |  `registry.owner`| global | false | | `setEmergencyPaused` |
 | `setMaxBountyDelay`  |time that must pass to change to max bounty |`registry.owner`| global | 2 days | >= 2 days | `registry.setMaxBountyDelay` |
 | **VAULT CONFIGURATION** | 
-| `owner` | controls certain vault settings | `vault.owner` | vault | | owner | |  `vault.transferOwnership`, `vault.renounceOwnership` |
+| `owner` | controls certain vault settings | `vault.owner` | vault | |  | |  `vault.transferOwnership`, `vault.renounceOwnership` |
 | `committee` | proposes payouts |`vault.committee` | vault | || `vault.setCommittee` | after `committeeCheckIn` |
 | `isVaultVisible` | | `registry.owner`| vault | false | | `registry.setVaultVisibility(_vault, _visible)` |
 | `vaultDescription` | | `registry.owner`| vault | | | `vault.setVaultDescription` | only an event |
@@ -28,17 +28,17 @@ By default, all the these roles, except the `committee`, are assigned to the Hat
 | `withdrawRequestEnablePeriod`| | `registry.owner`| global | 7 days | >= 6 hours, <= 100 days | `registry.setWithdrawRequestParams` |
 | **SUBMISSION** |
  `claimFee` | fee to be paid when submitting a claim | `registry.owner`| global | 0 | - | `registry.setClaimFee` |
-| **PAYOUT** |
+| **PAYOUT** see [payout](payout.md) for details|| |
 | `committee` | arbitrates claims and initiates payouts |`vault.owner` | vault |  ||`vault.setCommittee`  (only if committee has not checked in yet) |
 | `committeeCheckedIn` | |`vault.committee` | vault | | | `vault.committeeCheckIn()` |
-| `maxBounty` |maximum bounty that can be paid out| `vault.owner` | vault | | <= 90% | `vault.setPendingMaxBounty`, `vault.setMaxBounty` | noActiveClaim |
-| `bountyGovernanceHAT`  ||`registry.owner`| vault | | +bountyHackerHatVested <= 20% | `vault.setHATBountySplit` |
-| `defaultBountyGovernanceHAT` || `registry.owner`| global | | +defaultBountyHackerHatVested <= 20% | `registry.setDefaultHATBountySplit` |
-| `bountyHackerHATVested`| |`registry.owner` | vault | | +bountyGovernanceHAT <= 20% | `vault.setHATBountySplit` |
-| `defaultBountyHackerHATVested` || `registry.owner`| global | | +defaultBountyGovernanceHAT <= 20% | `registry.setDefaultHATBountySplit` |
-| `bountySplit.hacker` || `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
-| `bountySplit.hackerVested` || `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
-| `bountySplit.committee` ||  `vault.owner` | vault | | sum(bountySplit) = 100%, max 10% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
+| `maxBounty` |maximum amountthat can be paid out for a claim| `vault.owner` | vault | | <= 90% | `vault.setPendingMaxBounty`, `vault.setMaxBounty` | noActiveClaim |
+| `bountySplit.hacker` | part of the payout that goes directly to the submitter | `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
+| `bountyHackerHATVested`| part of the payout that is converted to HATs and vested to the user|`registry.owner` | vault | | +bountyGovernanceHAT <= 35% | `vault.setHATBountySplit` |
+| `defaultBountyHackerHATVested` | protocol-level default value | `registry.owner`| global | | +defaultBountyGovernanceHAT <= 35% | `registry.setDefaultHATBountySplit` |
+| `bountySplit.hackerVested` | part | `vault.owner` | vault | | sum(bountySplit) = 100% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
+| `bountyGovernanceHAT`  | percentage of the payout that goes to HATs governance |`registry.owner`| vault | | +bountyHackerHatVested <= 35% | `vault.setHATBountySplit` |
+| `defaultBountyGovernanceHAT` | protocol-level default value| `registry.owner`| global | | +defaultBountyHackerHatVested <= 35% | `registry.setDefaultHATBountySplit` |
+| `bountySplit.committee` | part of the payout that goes to the committee|  `vault.owner` | vault | | sum(bountySplit) = 100%, max 10% | `vault.setBountySplit` | noActiveClaim noSafetyPeriod |
 | `hatVestingDuration` | | `registry.owner`| global | 90 days | < 180 days |  `registry.setHatVestingParams` |
 | `hatVestingPeriods`  ||`registry.owner`| global | 90 | > 0, <= hatVestingDuration |  `registry.setHatVestingParams` |
 | `vestingPeriods` || `vault.owner` | vault | | > 0 | `vault.setVestingParams` |
