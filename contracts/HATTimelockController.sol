@@ -54,6 +54,10 @@ contract HATTimelockController is TimelockController {
     external onlyRole(PROPOSER_ROLE) {
         _rewardController.setAllocPoint(address(_vault), _allocPoint);
     }
+    
+    function addRewardController(IHATVault _vault, IRewardController _rewardController) external onlyRole(PROPOSER_ROLE) {
+        _vault.addRewardController(_rewardController);
+    }
 
     function swapAndSend(
         IHATVaultsRegistry _registry,
