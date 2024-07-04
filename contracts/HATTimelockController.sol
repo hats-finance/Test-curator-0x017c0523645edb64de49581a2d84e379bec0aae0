@@ -59,6 +59,10 @@ contract HATTimelockController is TimelockController {
         _vault.setHATBountySplit(_bountyGovernanceHAT, _bountyHackerHATVested);
     }
 
+    function addRewardController(HATVault _vault, IRewardController _rewardController) external onlyRole(PROPOSER_ROLE) {
+        _vault.addRewardController(_rewardController);
+    }
+
     function swapAndSend(
         HATVaultsRegistry _registry,
         address _asset,
