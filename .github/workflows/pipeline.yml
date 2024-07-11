@@ -31,6 +31,8 @@ jobs:
       - name: JS Lint
         run: |
           npx eslint .
+      - name: Solidity Compile
+        run: npm run clean && npm run compile
       - name: Solidity Tests # Needed because coverage doesn't work with all tests
         run: npm run test
       - name: Solidity Test Coverage
