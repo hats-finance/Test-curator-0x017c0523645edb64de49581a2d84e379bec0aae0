@@ -2,7 +2,7 @@
 pragma solidity 0.8.16;
 
 import "./TokenLock.sol";
-import "../HATToken.sol";
+import "../token/HATToken.sol";
 
 
 contract HATTokenLock is TokenLock {
