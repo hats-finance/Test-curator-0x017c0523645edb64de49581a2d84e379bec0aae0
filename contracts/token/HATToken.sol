@@ -4,7 +4,7 @@ pragma solidity 0.8.16;
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interfaces/IHATToken.sol";
+import "../interfaces/IHATToken.sol";
 
 contract HATToken is IHATToken, ERC20Votes, ERC20Capped, Ownable {
 
