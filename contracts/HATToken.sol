@@ -66,4 +66,6 @@ contract HATToken is IHATToken, ERC20Votes, ERC20Capped, Ownable {
         super._mint(account, amount);
     }
 
+    
+
 }
