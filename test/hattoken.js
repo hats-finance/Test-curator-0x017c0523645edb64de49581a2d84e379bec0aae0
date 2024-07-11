@@ -949,6 +949,9 @@ contract("HATToken", (accounts) => {
     const mockGateway = await MockL1CustomGateway.new();
     const mockRouter = await MockL2GatewayRouter.new();
     const token = await HATTokenArbitrumBridgeL1.new(mockGateway.address, mockRouter.address, accounts[0]);
+    await token.setTransferable({from: accounts[0]});
+    await token.setMinter(accounts[0], web3.utils.toWei("1000"));
+    await token.mint(accounts[1], web3.utils.toWei("100"));
     try {
       await token.isArbitrumEnabled();
       assert(false, "This method is not enabled");
@@ -985,6 +988,17 @@ contract("HATToken", (accounts) => {
       0,
       accounts[0]
     );
+
+    let value = web3.utils.toWei("10");
+
+    await token.approve(accounts[2], value, { from: accounts[1] });
+
+    await token.transferFrom(accounts[1], accounts[3], web3.utils.toWei("5"), {
+      from: accounts[2],
+    });
+
+    let recipientBalance = (await token.balanceOf(accounts[3])).toString();
+    assert.equal(recipientBalance, web3.utils.toWei("5"));
   });
 
   it("test HATTokenArbitrumBridgeL2", async () => {
@@ -992,7 +1006,7 @@ contract("HATToken", (accounts) => {
     try {
       await token.bridgeMint(
         accounts[0],
-        100
+        web3.utils.toWei("100")
       );
       assert(false, "only L2 gateway");
     } catch (ex) {
@@ -1001,17 +1015,17 @@ contract("HATToken", (accounts) => {
 
     await token.bridgeMint(
       accounts[0],
-      100,
+      web3.utils.toWei("100"),
       { from: accounts[1] }
     );
 
     let balance = await token.balanceOf.call(accounts[0]);
-    assert.equal(balance.valueOf(), 100);
+    assert.equal(balance.valueOf(), web3.utils.toWei("100"));
 
     try {
       await token.bridgeBurn(
         accounts[0],
-        100
+        web3.utils.toWei("100")
       );
       assert(false, "only L2 gateway");
     } catch (ex) {
@@ -1020,7 +1034,7 @@ contract("HATToken", (accounts) => {
 
     await token.bridgeBurn(
       accounts[0],
-      100,
+      web3.utils.toWei("100"),
       { from: accounts[1] }
     );
 
