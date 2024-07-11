@@ -1,2 +1,2 @@
 contracts/mocks
-contracts/HATToken.sol
+contracts/token/HATToken.sol
