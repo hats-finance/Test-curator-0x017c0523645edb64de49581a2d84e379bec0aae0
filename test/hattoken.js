@@ -1,4 +1,8 @@
 const HATToken = artifacts.require("./HATTokenMock.sol");
+const HATTokenArbitrumBridgeL1 = artifacts.require("./HATTokenArbitrumBridgeL1.sol");
+const HATTokenArbitrumBridgeL2 = artifacts.require("./HATTokenArbitrumBridgeL2.sol");
+const MockL1CustomGateway = artifacts.require("./MockL1CustomGateway.sol");
+const MockL2GatewayRouter = artifacts.require("./MockL2GatewayRouter.sol");
 const utils = require("./utils.js");
 const { fromRpcSig } = require("ethereumjs-util");
 const ethSigUtil = require("eth-sig-util");
@@ -939,6 +943,89 @@ contract("HATToken", (accounts) => {
         assertVMException(ex, "TransfersDisabled");
       }
     });
+  });
+
+  it("test HATTokenArbitrumBridgeL1", async () => {
+    const mockGateway = await MockL1CustomGateway.new();
+    const mockRouter = await MockL2GatewayRouter.new();
+    const token = await HATTokenArbitrumBridgeL1.new(mockGateway.address, mockRouter.address, accounts[0]);
+    try {
+      await token.isArbitrumEnabled();
+      assert(false, "This method is not enabled");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    try {
+      await token.registerTokenOnL2(
+        accounts[0],
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        accounts[0],
+        { from: accounts[1] }
+      );
+      assert(false, "only owner");
+    } catch (ex) {
+      assertVMException(ex, "Ownable: caller is not the owner");
+    }
+
+    await token.registerTokenOnL2(
+      accounts[0],
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      accounts[0]
+    );
+  });
+
+  it("test HATTokenArbitrumBridgeL2", async () => {
+    const token = await HATTokenArbitrumBridgeL2.new(accounts[1], accounts[2]);
+    try {
+      await token.bridgeMint(
+        accounts[0],
+        100
+      );
+      assert(false, "only L2 gateway");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    await token.bridgeMint(
+      accounts[0],
+      100,
+      { from: accounts[1] }
+    );
+
+    let balance = await token.balanceOf.call(accounts[0]);
+    assert.equal(balance.valueOf(), 100);
+
+    try {
+      await token.bridgeBurn(
+        accounts[0],
+        100
+      );
+      assert(false, "only L2 gateway");
+    } catch (ex) {
+      assertVMException(ex);
+    }
+
+    await token.bridgeBurn(
+      accounts[0],
+      100,
+      { from: accounts[1] }
+    );
+
+    balance = await token.balanceOf.call(accounts[0]);
+    assert.equal(balance.valueOf(), 0);
   });
 
 });
