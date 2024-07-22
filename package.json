@@ -14,6 +14,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint --fix": "eslint --fix .",
+    "clean": "hardhat clean",
+    "compile": "hardhat compile",
     "test": "hardhat test",
     "coveralls": "hardhat --config hardhat.config.coverage.js coverage ",
     "gas-avg": "hardhat test && python3 gas-avg-check.py"
@@ -72,6 +74,7 @@
   "author": "contact@hats.finance",
   "license": "MIT",
   "dependencies": {
+    "@arbitrum/token-bridge-contracts": "1.2.1",
     "@openzeppelin/contracts": "4.8.3",
     "@openzeppelin/contracts-upgradeable": "4.8.3"
   },

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.16;
 
-import "../HATToken.sol";
+import "../token/HATToken.sol";
 //solhint-disable func-visibility 
 //solhint-disable no-empty-blocks
 
