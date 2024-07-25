@@ -1,4 +1,3 @@
-const { ethers } = require('hardhat');
 const { providers, Wallet } = require('ethers');
 const { getL2Network, L1ToL2MessageStatus } = require('@arbitrum/sdk');
 const { AdminErc20Bridger } = require('@arbitrum/sdk/dist/lib/assetBridger/erc20Bridger');
